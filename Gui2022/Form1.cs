@@ -94,5 +94,49 @@ namespace Gui2022
 
         private int inc;
 
+        // NonAsync
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    new Thread( () => SlowOperation()).Start();
+        //}
+
+        //Async vs Blocking Call
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await SlowOperationAsync(); // C# returns to the caller
+            // when SlowOperationAsync finishes UI-thread returns to this line
+        }
+
+
+        private async Task SlowOperationAsync()
+        {
+            await Task.Delay(5000);
+            //if (!InvokeRequired)
+            //{
+                UpdateButton1(); // Blocking Call = thread does not progress until complete
+            //}
+            //else
+            //{
+            //    BeginInvoke(UpdateButton1);
+            //}
+        }
+
+        private void SlowOperation()
+        { 
+            Thread.Sleep(5000); // current thread to sleep
+            if (!InvokeRequired)
+            {
+                UpdateButton1(); // Blocking Call = thread does not progress until complete
+            }
+            else
+            {
+                BeginInvoke(UpdateButton1);
+            }
+        }
+
+        private void UpdateButton1()
+        {
+            button1.Text = new Random().Next(1000) + "";
+        }
     }
 }
