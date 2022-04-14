@@ -111,7 +111,7 @@ namespace Gui2022
         private async Task SlowOperationAsync()
         {
             await Task.Delay(5000);
-            //if (!InvokeRequired)
+            //if (!InvokeRequired) // NOT needed since async runs on current = UI thread
             //{
                 UpdateButton1(); // Blocking Call = thread does not progress until complete
             //}
